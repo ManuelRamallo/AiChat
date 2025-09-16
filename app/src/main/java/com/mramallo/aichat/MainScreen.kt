@@ -31,17 +31,19 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Alignment
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(viewModel: MainViewModel = viewModel()) {
     var inputTextState by remember { mutableStateOf(TextFieldValue("")) }
 
     val focusManager = LocalFocusManager.current
 
     fun handleSend() {
         if (inputTextState.text.isNotBlank()) {
-            // Por ahora no hacemos nada con el texto; solo ocultamos el teclado
+            viewModel.sendMessage(inputTextState.text)
+            inputTextState = TextFieldValue("")
             focusManager.clearFocus()
         }
     }

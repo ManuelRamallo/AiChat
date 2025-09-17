@@ -21,6 +21,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -35,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -71,6 +74,14 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
         }
     ) { paddingValues ->
         val messages by viewModel.messages.collectAsState(initial = emptyList())
+        val listState = rememberLazyListState()
+
+        // Auto-scroll al final cuando se añaden mensajes
+        LaunchedEffect(messages.size) {
+            if (messages.isNotEmpty()) {
+                listState.animateScrollToItem(messages.size - 1)
+            }
+        }
 
         Column(
             modifier = Modifier
@@ -81,7 +92,8 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth(),
-                contentPadding = androidx.compose.foundation.layout.PaddingValues(12.dp)
+                contentPadding = androidx.compose.foundation.layout.PaddingValues(12.dp),
+                state = listState
             ) {
                 items(messages, key = { it.id }) { msg ->
                     MessageBubble(message = msg)

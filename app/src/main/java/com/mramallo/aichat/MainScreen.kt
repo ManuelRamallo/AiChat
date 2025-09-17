@@ -22,9 +22,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
@@ -47,14 +46,15 @@ import androidx.compose.ui.text.style.TextAlign
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(viewModel: MainViewModel = viewModel()) {
-    var inputTextState by remember { mutableStateOf(TextFieldValue("")) }
+    var inputText by rememberSaveable { mutableStateOf("") }
 
     val focusManager = LocalFocusManager.current
 
     fun handleSend() {
-        if (inputTextState.text.isNotBlank()) {
-            viewModel.sendMessage(inputTextState.text)
-            inputTextState = TextFieldValue("")
+        val textToSend = inputText.trim()
+        if (textToSend.isNotEmpty()) {
+            viewModel.sendMessage(textToSend)
+            inputText = ""
             focusManager.clearFocus()
         }
     }
@@ -67,8 +67,8 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
         bottomBar = {
             ChatInputField(
                 modifier = Modifier.fillMaxWidth(),
-                value = inputTextState,
-                onValueChange = { inputTextState = it },
+                value = inputText,
+                onValueChange = { inputText = it },
                 onSend = { handleSend() }
             )
         }
@@ -137,8 +137,8 @@ private fun MessageBubble(message: Message) {
 @Composable
 private fun ChatInputField(
     modifier: Modifier,
-    value: TextFieldValue,
-    onValueChange: (TextFieldValue) -> Unit,
+    value: String,
+    onValueChange: (String) -> Unit,
     onSend: () -> Unit
 ) {
     Column(
@@ -158,7 +158,7 @@ private fun ChatInputField(
                 trailingIcon = {
                     IconButton(
                         onClick = onSend,
-                        enabled = value.text.isNotBlank()
+                        enabled = value.isNotBlank()
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.Send,

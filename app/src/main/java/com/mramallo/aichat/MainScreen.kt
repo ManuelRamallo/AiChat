@@ -152,7 +152,9 @@ private fun ChatInputField(
     onSend: () -> Unit
 ) {
     Column(
-        modifier = modifier.navigationBarsPadding()
+        modifier = modifier
+            .navigationBarsPadding()
+            .imePadding()
     ) {
         Box(
             modifier = Modifier

@@ -52,8 +52,8 @@ fun MessageBubble(message: Message) {
     val shape = RoundedCornerShape(
         topStart = 12.dp,
         topEnd = 12.dp,
-        bottomStart = if (message.isUser) 0.dp else 12.dp,
-        bottomEnd = if (!message.isUser) 0.dp else 12.dp
+        bottomStart = if (!message.isUser) 0.dp else 12.dp,
+        bottomEnd = if (message.isUser) 0.dp else 12.dp
     )
     val background = if (message.isUser) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant
     val content = if (message.isUser) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant

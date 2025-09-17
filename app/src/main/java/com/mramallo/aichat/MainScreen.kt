@@ -20,6 +20,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -32,6 +33,13 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Alignment
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextAlign
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,14 +70,49 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
             )
         }
     ) { paddingValues ->
-        // Contenido principal (sin mensajes por ahora) con texto centrado
-        Box(
+        val messages by viewModel.messages.collectAsState(initial = emptyList())
+
+        Column(
             modifier = Modifier
                 .padding(paddingValues)
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
+                .fillMaxSize()
         ) {
-            Text(text = "Tu conversación aparecerá aquí")
+            LazyColumn(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
+                contentPadding = androidx.compose.foundation.layout.PaddingValues(12.dp)
+            ) {
+                items(messages, key = { it.id }) { msg ->
+                    MessageBubble(message = msg)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun MessageBubble(message: Message) {
+    val shape = RoundedCornerShape(16.dp)
+    val background = if (message.isUser) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant
+    val content = if (message.isUser) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = if (message.isUser) Arrangement.End else Arrangement.Start
+    ) {
+        Surface(
+            modifier = Modifier
+                .padding(vertical = 4.dp)
+                .clip(shape),
+            color = background
+        ) {
+            Text(
+                text = message.text,
+                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                color = content,
+                textAlign = if (message.isUser) TextAlign.End else TextAlign.Start
+            )
         }
     }
 }

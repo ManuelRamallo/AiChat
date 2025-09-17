@@ -88,15 +88,25 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
                 .padding(paddingValues)
                 .fillMaxSize()
         ) {
-            LazyColumn(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
-                contentPadding = androidx.compose.foundation.layout.PaddingValues(12.dp),
-                state = listState
-            ) {
-                items(messages, key = { it.id }) { msg ->
-                    MessageBubble(message = msg)
+            if (messages.isEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = "Aún no hay mensajes")
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(12.dp),
+                    state = listState
+                ) {
+                    items(messages, key = { it.id }) { msg ->
+                        MessageBubble(message = msg)
+                    }
                 }
             }
         }

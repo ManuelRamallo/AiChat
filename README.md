@@ -4,9 +4,11 @@ This is a chat application that uses the OpenAI API to generate AI-based respons
 ### Configuration
 To use this application, you need to configure an OpenAI API key:
 
-    1. Create or edit the local.properties file in the root of the project.
-    2. Add the following line with your API key:
-        openai.api.key=your_api_key_here
+1. Create or edit the local.properties file in the root of the project.
+2. Add the following line with your API key:
+
+
+    openai.api.key=your_api_key_here
 
 
 ### Obtaining an OpenAI API Key

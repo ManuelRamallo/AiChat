@@ -1,4 +1,4 @@
-package com.mramallo.aichat.ui
+package com.mramallo.aichat.ui.screens.chat.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

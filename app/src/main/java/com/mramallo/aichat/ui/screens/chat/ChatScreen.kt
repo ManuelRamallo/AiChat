@@ -1,4 +1,4 @@
-package com.mramallo.aichat
+package com.mramallo.aichat.ui.screens.chat
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,8 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.lazy.rememberLazyListState
-import com.mramallo.aichat.ui.ChatInputField
-import com.mramallo.aichat.ui.MessageList
+import com.mramallo.aichat.ui.screens.chat.components.ChatInputField
+import com.mramallo.aichat.ui.screens.chat.components.MessageList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

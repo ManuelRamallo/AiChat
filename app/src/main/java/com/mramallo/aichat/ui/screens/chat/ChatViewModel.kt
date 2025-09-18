@@ -1,4 +1,4 @@
-package com.mramallo.aichat
+package com.mramallo.aichat.ui.screens.chat
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
